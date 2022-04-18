@@ -36,12 +36,12 @@ module.exports.deleteCard = (req, res, next) => {
 // like by
 module.exports.putLike = (req, res, next) => {
   Card.findByIdAndUpdate(
-    req.card._id,
+    req.params._id,
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив
     { new: true },
   )
     .then((card) => {
-      if (!card._id) {
+      if (!card) {
         res.send('Такой карточки не существует');
       }
       res.status(200).send({ data: card, message: 'Лайк' });
@@ -52,12 +52,12 @@ module.exports.putLike = (req, res, next) => {
 // delete like by _id
 module.exports.deleteLike = (req, res, next) => {
   Card.findByIdAndUpdate(
-    req.card._id,
+    req.params._id,
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
     .then((card) => {
-      if (!card._id) {
+      if (!card) {
         res.send('Такой карточки не существует');
       }
       res.status(200).send({ data: card, message: 'Лайк удален' });
