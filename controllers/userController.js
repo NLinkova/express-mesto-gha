@@ -36,13 +36,14 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
+      if (!user) {
+        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      }
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.statusCode === ERROR_CODE_BAD_REQUEST) {
+      if (err.name === 'CastError') {
         res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Ошибка. Введен некорректный id пользователя' });
-      } else if (err.statusCode === ERROR_CODE_NOT_FOUND) {
-        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
       } else {
         res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
       }
@@ -54,13 +55,14 @@ module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
   User.findByIdAndUpdate(req.user._id, { name, about })
     .then((user) => {
+      if (!user) {
+        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      }
       res.status(200).json({ data: user, message: 'Профиль обновлен' });
     })
     .catch((err) => {
-      if (err.statusCode === ERROR_CODE_BAD_REQUEST) {
-        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Ошибка. Введен некорректный id пользователя' });
-      } else if (err.statusCode === ERROR_CODE_NOT_FOUND) {
-        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
       } else {
         res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
       }
@@ -72,13 +74,14 @@ module.exports.updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
   User.findByIdAndUpdate(req.user._id, { avatar })
     .then((user) => {
+      if (!user) {
+        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      }
       res.status(200).send({ data: user, message: 'Аватар создан' });
     })
     .catch((err) => {
-      if (err.statusCode === ERROR_CODE_BAD_REQUEST) {
-        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Ошибка. Введен некорректный id пользователя' });
-      } else if (err.statusCode === ERROR_CODE_NOT_FOUND) {
-        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      if (err.name === 'ValidationError') {
+        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
       } else {
         res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
       }
