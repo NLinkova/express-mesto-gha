@@ -7,10 +7,20 @@ const { PORT = 3000 } = process.env;
 const app = express();
 
 // подключаемся к серверу mongo
-mongoose.connect("mongodb://localhost:27017/mestodb", {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect("mongodb://localhost:27017/mestodb", {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (err) {
+    console.log(`Error: ${err.message}`);
+    process.exit(1);
+  }
+};
+connectDB();
 
-app.listen(PORT);
+app.use("/", require("./routes/userRoutes"));
+// app.use('/cards', require('./routes/cardRotes'));
+app.listen(PORT, console.log(`Server running on port ${PORT}`));

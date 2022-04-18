@@ -4,7 +4,7 @@
   "description": "MERN app",
   "main": "app.js",
   "scripts": {
-    "devStart": "npm run dev",
+    "devStart": "nodemon app.js",
     "start": "npm run start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint ."
