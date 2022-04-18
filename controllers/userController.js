@@ -10,10 +10,7 @@ const {
 // eslint-disable-next-line no-unused-vars
 module.exports.registerUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar }, {
-    new: true,
-    runValidators: true,
-  })
+  User.create({ name, about, avatar })
     .then((user) => {
       res.status(200).send({ data: user, message: 'Пользователь создан' });
     })
@@ -55,10 +52,7 @@ module.exports.getUserById = (req, res, next) => {
 // update user info by user_id
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, {
-    new: true,
-    runValidators: true,
-  })
+  User.findByIdAndUpdate(req.user._id, { name, about })
     .then((user) => {
       res.status(200).json({ data: user, message: 'Профиль обновлен' });
     })
@@ -76,10 +70,7 @@ module.exports.updateUser = (req, res, next) => {
 // update user avatar by user_id
 module.exports.updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, {
-    new: true,
-    runValidators: true,
-  })
+  User.findByIdAndUpdate(req.user._id, { avatar })
     .then((user) => {
       res.status(200).send({ data: user, message: 'Аватар создан' });
     })

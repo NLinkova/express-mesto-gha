@@ -12,10 +12,7 @@ module.exports.createCard = (req, res, next) => {
   console.log(req.user._id); // _id станет доступен
   const { name, link } = req.body;
   const owner = req.user._id;
-  Card.create({ name, link, owner }, {
-    new: true,
-    runValidators: true,
-  })
+  Card.create({ name, link, owner })
     .then((card) => {
       res.status(200).send({ data: card, message: 'Карточка создана' });
     })
