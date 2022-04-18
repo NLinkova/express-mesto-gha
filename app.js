@@ -36,7 +36,11 @@ app.use((req, res, next) => {
 });
 
 // routes
-app.use('/', require('./routes/userRoutes'));
-app.use('/', require('./routes/cardRoutes'));
+app.use('/users', require('./routes/userRoutes'));
+app.use('/cards', require('./routes/cardRoutes'));
+
+app.use((req, res) => {
+  res.status(404).send({ message: 'Page not found' });
+});
 
 app.listen(PORT, console.log(`Server running on port ${PORT}`));
