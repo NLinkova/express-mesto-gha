@@ -35,6 +35,7 @@ app.use((req, res, next) => {
   next();
 });
 
+// routes
 app.use('/', require('./routes/userRoutes'));
 app.use('/', require('./routes/cardRoutes'));
 
