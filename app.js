@@ -1,5 +1,8 @@
-const express = require("express");
-const mongoose = require("mongoose");
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
@@ -9,7 +12,7 @@ const app = express();
 // подключаемся к серверу mongo
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect("mongodb://localhost:27017/mestodb", {
+    const conn = await mongoose.connect('mongodb://localhost:27017/mestodb', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -21,6 +24,18 @@ const connectDB = async () => {
 };
 connectDB();
 
-app.use("/", require("./routes/userRoutes"));
-// app.use('/cards', require('./routes/cardRotes'));
+app.use(bodyParser.json()); // для собирания JSON-формата
+app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
+
+app.use((req, res, next) => {
+  req.user = {
+    _id: '625cd7b9c2279c18ff21dc1e', // вставьте сюда _id созданного в предыдущем пункте пользователя
+  };
+
+  next();
+});
+
+app.use('/', require('./routes/userRoutes'));
+app.use('/', require('./routes/cardRoutes'));
+
 app.listen(PORT, console.log(`Server running on port ${PORT}`));
