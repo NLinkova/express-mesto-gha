@@ -43,9 +43,9 @@ module.exports.getUserById = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE_BAD_REQUEST).send({ data: 'Ошибка. Введен некорректный id пользователя' });
+        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Ошибка. Введен некорректный id пользователя' });
       } else {
-        res.status(ERROR_CODE_INTERNAL).send({ data: 'На сервере произошла ошибка' });
+        res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
       }
     });
 };
@@ -58,15 +58,14 @@ module.exports.updateUser = (req, res, next) => {
       if (!user) {
         res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
       }
-      res.status(200).send({ data: user, message: 'Профиль обновлен' });
+      res.status(200).json({ data: user, message: 'Профиль обновлен' });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные при редактировании пользователя' });
-      } else if (err.name === 'CastError') {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
+        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
+      } else {
+        res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
       }
-      res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -82,10 +81,9 @@ module.exports.updateUserAvatar = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные при редактировании пользователя' });
-      } else if (err.name === 'CastError') {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
+        res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
+      } else {
+        res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
       }
-      res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
     });
 };
