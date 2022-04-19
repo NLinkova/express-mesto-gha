@@ -1,5 +1,3 @@
-/* eslint-disable import/extensions */
-/* eslint-disable import/no-unresolved */
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');

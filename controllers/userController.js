@@ -17,8 +17,6 @@ module.exports.registerUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные при создании пользователя' });
-      } else if (err.statusCode === ERROR_CODE_NOT_FOUND) {
-        res.status(ERROR_CODE_NOT_FOUND).send({ message: err.message });
       } else {
         res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
       }
@@ -34,10 +32,10 @@ module.exports.getUsers = (req, res, next) => {
 
 // get user by user_id
 module.exports.getUserById = (req, res, next) => {
-  User.findById(req.user._id)
+  User.findById(req.params._id)
     .then((user) => {
       if (!user) {
-        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Нет пользователя с переданным id' });
       } else {
         res.status(200).send(user);
       }
@@ -64,7 +62,7 @@ module.exports.updateUser = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Нет пользователя с переданным id' });
       } else {
         res.status(200).json({ data: user, message: 'Профиль обновлен' });
       }
@@ -91,7 +89,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+        res.status(ERROR_CODE_NOT_FOUND).send({ message: 'Нет пользователя с переданным id' });
       } else {
         res.status(200).send({ data: user, message: 'Аватар создан' });
       }

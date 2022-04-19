@@ -45,7 +45,7 @@ module.exports.deleteCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.statusCode === ERROR_CODE_BAD_REQUEST) {
+      if (err.name === 'CastError') {
         res.status(ERROR_CODE_BAD_REQUEST).send({ message: 'Переданы некорректные данные' });
       } else {
         res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
@@ -68,7 +68,7 @@ module.exports.putLike = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.statusCode === ERROR_CODE_BAD_REQUEST) {
+      if (err.name === 'CastError') {
         res.status(ERROR_CODE_BAD_REQUEST).send({ message: err.message });
       } else {
         res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
@@ -91,7 +91,7 @@ module.exports.deleteLike = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.statusCode === ERROR_CODE_BAD_REQUEST) {
+      if (err.name === 'CastError') {
         res.status(ERROR_CODE_BAD_REQUEST).send({ message: err.message });
       } else {
         res.status(ERROR_CODE_INTERNAL).send({ message: 'На сервере произошла ошибка' });
