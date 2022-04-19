@@ -38,8 +38,9 @@ module.exports.getUserById = (req, res, next) => {
     .then((user) => {
       if (!user) {
         res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      } else {
+        res.status(200).send(user);
       }
-      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -53,12 +54,20 @@ module.exports.getUserById = (req, res, next) => {
 // update user info by user_id
 module.exports.updateUser = (req, res, next) => {
   const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { name, about },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
     .then((user) => {
       if (!user) {
         res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      } else {
+        res.status(200).json({ data: user, message: 'Профиль обновлен' });
       }
-      res.status(200).json({ data: user, message: 'Профиль обновлен' });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -72,12 +81,20 @@ module.exports.updateUser = (req, res, next) => {
 // update user avatar by user_id
 module.exports.updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar },
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
     .then((user) => {
       if (!user) {
         res.status(ERROR_CODE_NOT_FOUND).send('Такого пользователя не существует');
+      } else {
+        res.status(200).send({ data: user, message: 'Аватар создан' });
       }
-      res.status(200).send({ data: user, message: 'Аватар создан' });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
