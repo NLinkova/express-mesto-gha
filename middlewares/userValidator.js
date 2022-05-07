@@ -11,6 +11,9 @@ const checkUrl = (url) => {
 
 const userValidator = celebrate({
   body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().custom(checkUrl, 'avatar link validation'),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }),
@@ -18,8 +21,8 @@ const userValidator = celebrate({
 
 const userUpdateValidator = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
   }),
 });
 
