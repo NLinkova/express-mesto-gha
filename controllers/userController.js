@@ -24,7 +24,7 @@ module.exports.createUser = (req, res, next) => {
       });
     })
     .then((user) => {
-      res.status(200).send(user);
+      res.send({ data: user });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -69,7 +69,7 @@ module.exports.getCurrentUser = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
       if (user) {
-        res.send({ user });
+        res.send({ data: user });
       } else {
         next(new ErrorNotFound('User not found'));
       }
@@ -115,6 +115,7 @@ module.exports.updateUser = (req, res, next) => {
     {
       new: true,
       runValidators: true,
+      upsert: false,
     },
   )
     .then((user) => {
@@ -141,6 +142,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
     {
       new: true,
       runValidators: true,
+      upsert: false,
     },
   )
     .then((user) => {
