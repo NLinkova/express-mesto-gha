@@ -1,23 +1,25 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const validator = require('validator');
+const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: "Жак-Ив Кусто",
+    default: 'Жак-Ив Кусто',
     minlength: 2,
     maxlength: 30,
   },
   about: {
     type: String,
-    default: "Исследователь",
+    default: 'Исследователь',
     minlength: 2,
     maxlength: 30,
   },
   avatar: {
     type: String,
     default:
-      "https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png",
+      'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
     validate: {
       validator: (v) => validator.isURL(v),
       message: (props) => `${props.value} is not a valid avatar link!`,
@@ -38,4 +40,20 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("user", userSchema);
+userSchema.statics.findUserByCredentials = function (email, password) {
+  return this.findOne({ email })
+    .select('+password')
+    .then((user) => {
+      if (!user) {
+        throw new ErrorUnauthorized('Указан некорректный Email или пароль.');
+      }
+      return bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          throw new ErrorUnauthorized('Указан некорректный Email или пароль.');
+        }
+        return user;
+      });
+    });
+};
+
+module.exports = mongoose.model('user', userSchema);
