@@ -11,7 +11,7 @@ const cardSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate(link) {
-      return /http(s)?:\/\/\S+[^\s]\.\S+/.test(link);
+      return /http[s]?:\/\/(www.)?[\S]+\.[a-z]+[\S]*/gi.test(link);
     },
   },
   owner: {

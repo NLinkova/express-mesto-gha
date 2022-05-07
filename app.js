@@ -1,15 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const { celebrate, Joi } = require('celebrate');
+const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
+const { userValidator } = require('./middlewares/userValidator');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 // const ErrorNotFound = require('./errors/ErrorNotFound');
 // const { cors } = require('./middlewares/cors');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
-
 const app = express();
 
 app.use(bodyParser.json()); // для собирания JSON-формата
@@ -27,26 +28,19 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 //   next();
 // });
-
+app.use(requestLogger);
 // routes
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required().min(4),
-  }),
-}), login);
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required().min(4),
-  }),
-}), createUser);
-// authorization route
+app.post('/signin', userValidator, login);
+app.post('/signup', userValidator, createUser);
+
 app.use(auth);
 
 app.use('/users', require('./routes/userRoutes'));
 app.use('/cards', require('./routes/cardRoutes'));
 
+app.use(errorLogger);
+
+app.use(errors());
 app.use(errorHandler);
 
 app.use((req, res) => {
