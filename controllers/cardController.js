@@ -1,18 +1,8 @@
-/* eslint-disable no-unused-vars */
 const Card = require('../models/cardModel');
-const ErrorConflict = require('../errors/ErrorConflict');
 const ErrorBadRequest = require('../errors/ErrorBadRequest');
 const ErrorForbidden = require('../errors/ErrorForbidden');
 const ErrorNotFound = require('../errors/ErrorNotFound');
-const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
-const ErrorInternalServer = require('../errors/ErrorInternalServer');
-const {
-  ERROR_CODE_BAD_REQUEST,
-  ERROR_CODE_NOT_FOUND,
-  ERROR_CODE_INTERNAL,
-} = require('../constants');
 
-// eslint-disable-next-line no-unused-vars
 module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;

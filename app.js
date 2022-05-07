@@ -28,7 +28,6 @@ connectDB();
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
 
-app.use(auth);
 app.use(errorHandler);
 
 app.use((req, res, next) => {
@@ -45,6 +44,9 @@ app.use((req, res, next) => {
 // routes
 app.post('/signin', login);
 app.post('/signup', createUser);
+// authorization route
+app.use(auth);
+
 app.use('/users', require('./routes/userRoutes'));
 app.use('/cards', require('./routes/cardRoutes'));
 
