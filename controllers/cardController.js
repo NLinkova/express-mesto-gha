@@ -14,7 +14,6 @@ const {
 
 // eslint-disable-next-line no-unused-vars
 module.exports.createCard = (req, res, next) => {
-  console.log(req.user._id);
   const { name, link } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
@@ -23,13 +22,13 @@ module.exports.createCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res
-          .status(ERROR_CODE_BAD_REQUEST)
-          .send({ message: 'Переданы некорректные данные' });
+        next(
+          new ErrorBadRequest(
+            'Переданы невалидные данные при создании карточки',
+          ),
+        );
       } else {
-        res
-          .status(ERROR_CODE_INTERNAL)
-          .send({ message: 'На сервере произошла ошибка' });
+        next(err);
       }
     });
 };
@@ -38,9 +37,7 @@ module.exports.getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.status(200).send(cards))
     .catch((err) => {
-      res
-        .status(ERROR_CODE_INTERNAL)
-        .send({ message: 'На сервере произошла ошибка' });
+      next(err);
     });
 };
 
@@ -74,20 +71,16 @@ module.exports.putLike = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        res
-          .status(ERROR_CODE_NOT_FOUND)
-          .send({ message: 'Такой карточки не существует' });
+        throw new ErrorNotFound('Такой карточки не существует');
       } else {
         res.status(200).send({ data: card });
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE_BAD_REQUEST).send({ message: err.message });
+        next(new ErrorBadRequest('Переданы некорректные данные'));
       } else {
-        res
-          .status(ERROR_CODE_INTERNAL)
-          .send({ message: 'На сервере произошла ошибка' });
+        next(err);
       }
     });
 };
@@ -100,20 +93,16 @@ module.exports.deleteLike = (req, res, next) => {
   )
     .then((card) => {
       if (!card) {
-        res
-          .status(ERROR_CODE_NOT_FOUND)
-          .send({ message: 'Такой карточки не существует' });
+        throw new ErrorNotFound('Такой карточки не существует');
       } else {
         res.status(200).send({ data: card });
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res.status(ERROR_CODE_BAD_REQUEST).send({ message: err.message });
+        next(new ErrorBadRequest('Переданы некорректные данные'));
       } else {
-        res
-          .status(ERROR_CODE_INTERNAL)
-          .send({ message: 'На сервере произошла ошибка' });
+        next(err);
       }
     });
 };

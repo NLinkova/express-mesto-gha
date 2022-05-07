@@ -106,29 +106,23 @@ module.exports.getCurrentUser = (req, res, next) => {
 module.exports.getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(200).send({ data: users }))
-    .catch((err) => res.status(ERROR_CODE_INTERNAL).send({ message: err.message }));
+    .catch((err) => next(err));
 };
 
 module.exports.getUserById = (req, res, next) => {
   User.findById(req.params._id)
     .then((user) => {
       if (!user) {
-        res
-          .status(ERROR_CODE_NOT_FOUND)
-          .send({ message: 'Нет пользователя с переданным id' });
+        throw (new ErrorNotFound('Нет пользователя с переданным id'));
       } else {
         res.status(200).send({ data: user });
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        res
-          .status(ERROR_CODE_BAD_REQUEST)
-          .send({ message: 'Ошибка. Введен некорректный id пользователя' });
+        next(new ErrorBadRequest('Невалидные данные'));
       } else {
-        res
-          .status(ERROR_CODE_INTERNAL)
-          .send({ message: 'На сервере произошла ошибка' });
+        next(err);
       }
     });
 };
@@ -145,22 +139,16 @@ module.exports.updateUser = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        res
-          .status(ERROR_CODE_NOT_FOUND)
-          .send({ message: 'Нет пользователя с переданным id' });
+        throw (new ErrorNotFound('Нет пользователя с переданным id'));
       } else {
-        res.status(200).json({ data: user });
+        res.status(200).send({ data: user });
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res
-          .status(ERROR_CODE_BAD_REQUEST)
-          .send({ message: 'Переданы некорректные данные' });
+      if (err.name === 'CastError') {
+        next(new ErrorBadRequest('Невалидные данные'));
       } else {
-        res
-          .status(ERROR_CODE_INTERNAL)
-          .send({ message: 'На сервере произошла ошибка' });
+        next(err);
       }
     });
 };
@@ -177,22 +165,16 @@ module.exports.updateUserAvatar = (req, res, next) => {
   )
     .then((user) => {
       if (!user) {
-        res
-          .status(ERROR_CODE_NOT_FOUND)
-          .send({ message: 'Нет пользователя с переданным id' });
+        throw (new ErrorNotFound('Нет пользователя с переданным id'));
       } else {
         res.status(200).send({ data: user });
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        res
-          .status(ERROR_CODE_BAD_REQUEST)
-          .send({ message: 'Переданы некорректные данные' });
+      if (err.name === 'CastError') {
+        next(new ErrorBadRequest('Невалидные данные'));
       } else {
-        res
-          .status(ERROR_CODE_INTERNAL)
-          .send({ message: 'На сервере произошла ошибка' });
+        next(err);
       }
     });
 };

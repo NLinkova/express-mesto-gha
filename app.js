@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const { login, createUser } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
+const ErrorNotFound = require('./errors/ErrorNotFound');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
 
@@ -29,6 +30,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // для приёма ве�
 
 app.use(auth);
 app.use(errorHandler);
+
+app.use((req, res, next) => {
+  next(new ErrorNotFound('Not found'));
+});
 // app.use((req, res, next) => {
 //   req.user = {
 //     _id: "625cd7b9c2279c18ff21dc1e",
