@@ -29,7 +29,7 @@ module.exports.deleteCard = (req, res, next) => {
       if (card.owner.toString() !== userId) {
         throw new ErrorForbidden('Вы не можете удалять чужие карточки');
       }
-      return Card.findByIdAndDelete(card._id);
+      return Card.findByIdAndRemove(card._id);
     })
     .then((card) => {
       res.send({ message: 'Успешно удалена карточка:', data: card });
