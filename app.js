@@ -7,6 +7,7 @@ const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 const { userValidator } = require('./middlewares/userValidator');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const ErrorNotFound = require('./errors/ErrorNotFound');
 // const ErrorNotFound = require('./errors/ErrorNotFound');
 // const { cors } = require('./middlewares/cors');
 // Слушаем 3000 порт
@@ -40,12 +41,11 @@ app.use('/cards', require('./routes/cardRoutes'));
 
 app.use(errorLogger);
 
+app.use((req, res, next) => {
+  next(new ErrorNotFound('Not found'));
+});
 app.use(errors());
 app.use(errorHandler);
-
-app.use((req, res) => {
-  res.status(404).send({ message: 'Page not found' });
-});
 
 // подключаемся к серверу mongo
 const connectDB = async () => {

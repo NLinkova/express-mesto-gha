@@ -9,7 +9,7 @@ const {
 } = require('../controllers/cardController');
 
 router.get('/', getCards);
-router.delete('/:_id', cardIdValidator, deleteCard);
+router.delete('/:cardId', cardIdValidator, deleteCard);
 router.post('/', cardValidator, createCard);
 router.put('/:_id/likes', cardIdValidator, putLike);
 router.delete('/:_id/likes', cardIdValidator, deleteLike);
