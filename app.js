@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv');
 const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
@@ -12,6 +13,7 @@ const ErrorNotFound = require('./errors/ErrorNotFound');
 // const { cors } = require('./middlewares/cors');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
+dotenv.config({ path: './config.env' });
 const app = express();
 
 app.use(bodyParser.json()); // для собирания JSON-формата
@@ -50,7 +52,7 @@ app.use(errorHandler);
 // подключаемся к серверу mongo
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect('mongodb://localhost:27017/mestodb', {
+    const conn = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

@@ -42,7 +42,7 @@ module.exports.login = (req, res, next) => {
     .findUserByCredentials(email, password)
     .then((user) => {
       res.send({
-        token: jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' }),
+        token: jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' }),
       });
     })
     .catch(next);

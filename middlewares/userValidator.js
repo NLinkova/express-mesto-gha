@@ -5,7 +5,6 @@ const checkUrl = (url) => {
   if (!isUrl(url, { require_protocol: true })) {
     throw new Error('Невалидная ссылка');
   }
-
   return url;
 };
 
