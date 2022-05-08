@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const ErrorUnauthorized = require('../errors/ErrorUnauthorized');
 
+// eslint-disable-next-line no-unused-vars
+const { JWT_SECRET = 'dev-key' } = process.env;
 const extractBearerHeader = (header) => header.replace('Bearer ', '');
 
 module.exports = (req, res, next) => {

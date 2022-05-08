@@ -13,6 +13,8 @@ const ErrorNotFound = require('./errors/ErrorNotFound');
 // const { cors } = require('./middlewares/cors');
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
+// eslint-disable-next-line no-unused-vars
+const { JWT_SECRET = 'dev-key' } = process.env;
 dotenv.config({ path: './config.env' });
 const app = express();
 
