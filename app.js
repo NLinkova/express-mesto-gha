@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { errors } = require('celebrate');
 const { login, createUser } = require('./controllers/userController');
 const auth = require('./middlewares/auth');
@@ -11,7 +12,9 @@ const ErrorNotFound = require('./errors/ErrorNotFound');
 
 // Слушаем 3000 порт
 const { PORT = 3000 } = process.env;
+
 const app = express();
+app.use(cors());
 
 app.use(bodyParser.json()); // для собирания JSON-формата
 app.use(bodyParser.urlencoded({ extended: true })); // для приёма веб-страниц внутри POST-запроса
