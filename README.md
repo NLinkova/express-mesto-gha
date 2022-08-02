@@ -1,20 +1,44 @@
 [![Tests](https://github.com/NLinkova/express-mesto-gha/actions/workflows/tests-13-sprint.yml/badge.svg)](https://github.com/NLinkova/express-mesto-gha/actions/workflows/tests-13-sprint.yml) [![Tests](https://github.com/NLinkova/express-mesto-gha/actions/workflows/tests-14-sprint.yml/badge.svg)](https://github.com/NLinkova/express-mesto-gha/actions/workflows/tests-14-sprint.yml)
-# Проект Mesto бэкенд
 
+# Mesto project backend
 
+This project is the final work for the 13-14-15 sprint on Yandex.Practice.
 
-## Директории
+## Description
 
-`/routes` — папка с файлами роутера  
-`/controllers` — папка с файлами контроллеров пользователя и карточки   
-`/models` — папка с файлами описания схем пользователя и карточки  
-  
-Остальные директории вспомогательные, создаются при необходимости разработчиком
+It presents:
 
-## Запуск проекта
+Backend of the application with the following features: authorization and registration of users, operations with cards and updating user data.
 
-`npm run start` — запускает сервер   
-`npm run dev` — запускает сервер с hot-reload
+---
 
-## Ссылка
+## Functionality:
+
+- Registration;
+- Authorization;
+- Editing the avatar;
+- Profile editing;
+- Adding a new photo;
+- Deleting a card when clicking on the icon;
+- Put / remove like;
+- Open photo in full size.
+
+---
+
+## Technologies used:
+
+- Serverless architecture
+- Node
+- Express;
+- MongodDB.
+
+---
+
+## Launch of the project:
+
+`npm run start` — run server  
+ `npm run dev` — run server with hot-reload
+
+## Link
+
 https://nlinkova.github.io/express-mesto-gha/
