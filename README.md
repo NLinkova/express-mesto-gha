@@ -37,8 +37,4 @@ Backend of the application with the following features: authorization and regist
 ## Launch of the project:
 
 `npm run start` — run server  
- `npm run dev` — run server with hot-reload
-
-## Link
-
-https://nlinkova.github.io/express-mesto-gha/
+`npm run dev` — run server with hot-reload
